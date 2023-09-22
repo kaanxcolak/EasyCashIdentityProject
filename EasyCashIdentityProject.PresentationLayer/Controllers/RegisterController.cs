@@ -54,8 +54,3 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
         }
     }
 }
-// En az 6 karakterden oluşacak
-// En az 1 küçük harf
-//En az 1 büyük harf
-//En az 1 sembol
-//En az 1 sayı içermeli
