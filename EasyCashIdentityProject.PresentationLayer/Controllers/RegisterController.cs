@@ -1,8 +1,10 @@
 ﻿using EasyCashIdentityProject.DtoLayer.Dtos.AppUserDtos;
 using EasyCashIdentityProject.EntityLayer.Concrete;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 
 namespace EasyCashIdentityProject.PresentationLayer.Controllers
 {
@@ -26,7 +28,11 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
-                AppUser appUser = new AppUser()
+                Random random = new Random();
+                int code;
+                code = random.Next(100000, 1000000);
+
+				AppUser appUser = new AppUser()
                 {
                     UserName = appUserRegisterDto.Username,
                     Name = appUserRegisterDto.Name,
@@ -34,11 +40,31 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
                     Email = appUserRegisterDto.Email,
                     City="Istanbul",
                     District="Bagcilar",
-                    ImageUrl="aaaa"
+                    ImageUrl="aaaa",
+                    ConfirmCode = code
                 };  
                 var result = await _userManager.CreateAsync(appUser, appUserRegisterDto.Password);
                 if(result.Succeeded)
                 {
+                    MimeMessage mimeMessage = new MimeMessage();
+                    MailboxAddress mailboxAddressFrom = new MailboxAddress("Easy Cash Admin", "kaancolak3458@gmail.com");
+                    MailboxAddress mailboxAddressTo = new MailboxAddress("User", appUser.Email);
+
+					mimeMessage.From.Add(mailboxAddressFrom);
+                    mimeMessage.To.Add(mailboxAddressTo);
+
+                    var bodyBuilder = new BodyBuilder();
+                    bodyBuilder.TextBody = "Kayıt işlemini gerçekleştirmek için onay kodunuz: " + code;
+                    mimeMessage.Body = bodyBuilder.ToMessageBody();
+                    mimeMessage.Subject = "Easy Cash Onay Kodu";
+
+                    SmtpClient client = new SmtpClient();
+                    client.Connect("smtp.gmail.com",587,false);
+                    client.Authenticate("kaancolak3458@gmail.com", "mkfmkvylbrclqrbq");   //mail kim tarafından gidecek - Yetkili kişi!!!
+                    client.Send(mimeMessage);
+                    client.Disconnect(true);
+
+
                     return RedirectToAction("Index", "ConfirmMail");
                 }
 				else
