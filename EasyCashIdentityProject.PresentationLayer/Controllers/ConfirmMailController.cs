@@ -15,20 +15,22 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index(int id)
+        public IActionResult Index()
         {
             var value = TempData["Mail"];
-            ViewBag.v = value;  
+            ViewBag.v = value;
+            //confirmMailViewModel.Mail = value.ToString();
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(ConfirmMailViewModel confirmMailViewModel)
         {
-            var value = TempData["Mail"];
-            var user = await _userManager.FindByEmailAsync(value.ToString());
+            var user = await _userManager.FindByEmailAsync(confirmMailViewModel.Mail);   
             if (user.ConfirmCode == confirmMailViewModel.ConfirmCode)
             {
+                user.EmailConfirmed = true;
+                await _userManager.UpdateAsync(user); 
                 return RedirectToAction("Index","MyProfile");     
             }
             return View();
@@ -36,3 +38,4 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
         }
     }
 }
+// Kullanıcı Adı - şifre Eşleşmeli <_> email confirmed olmalı
