@@ -21,35 +21,18 @@
                 <div class="">
                     <div class="page-title">
                         <div class="title_left">
-                            @RenderBody()
+                            <h2>@RenderBody()</h2>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- /page content -->
             <!-- footer content -->
-            <footer>
-                <div class="pull-right">
-                    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-                </div>
-                <div class="clearfix"></div>
-            </footer>
+            @await Component.InvokeAsync("_CustomerLayoutFooterPartial")
             <!-- /footer content -->
         </div>
     </div>
 
-    <!-- jQuery -->
-    <script src="../vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
-    <script src="../vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- FastClick -->
-    <script src="../vendors/fastclick/lib/fastclick.js"></script>
-    <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
-    <!-- jQuery custom content scroller -->
-    <script src="../vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-
-    <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    @await Component.InvokeAsync("_CustomerLayoutScriptPartial")
 </body>
 </html>
