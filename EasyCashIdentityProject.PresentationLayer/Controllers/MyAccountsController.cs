@@ -45,6 +45,11 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
                 user.ImageUrl = "test";
                 user.Email = appUserEditDto.Email;
                 user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, appUserEditDto.Password); //Veritabanına şifreyi hashleyerek göndermiş olucaz
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return RedirectToAction("Index", "Login");
+                }
             }
             return View();
 
