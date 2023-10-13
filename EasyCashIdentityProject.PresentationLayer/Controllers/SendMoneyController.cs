@@ -25,17 +25,17 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
         public async Task<IActionResult> Index(SendMoneyForCustomerAccountProcessDto sendMoneyForCustomerAccountProcessDto)
         {
             var context = new Context();
+
             var user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var receiverAccountNumberID = context.CustomerAccounts.Where(x => x.CustomerAccountNumber ==
+           sendMoneyForCustomerAccountProcessDto.ReceiverAccountNumber).Select(y => y.CustomerAccountID).FirstOrDefault();
 
             sendMoneyForCustomerAccountProcessDto.SenderID = user.Id;
             sendMoneyForCustomerAccountProcessDto.ProcessDate = Convert.ToDateTime(DateTime.Now.ToShortDateString());
             sendMoneyForCustomerAccountProcessDto.ProcessType = "Havale";
-            
-            var receiverAccountNumber = context.CustomerAccounts.Where(x=>x.CustomerAccountNumber ==
-            sendMoneyForCustomerAccountProcessDto.ReceiverAccountNumber).Select(y=>y.CustomerAccountID).FirstOrDefault();   
-            
+            sendMoneyForCustomerAccountProcessDto.ReceiverID = receiverAccountNumberID;
 
-            return View();
+            return RedirectToAction("Index", "Deneme");
         }
     }
 }
