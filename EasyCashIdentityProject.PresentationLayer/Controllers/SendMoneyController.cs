@@ -1,4 +1,5 @@
-﻿using EasyCashIdentityProject.DataAccessLayer.Concrete;
+﻿using EasyCashIdentityProject.BusinessLayer.Abstract;
+using EasyCashIdentityProject.DataAccessLayer.Concrete;
 using EasyCashIdentityProject.DtoLayer.Dtos.CustomerAccountProcessDtos;
 using EasyCashIdentityProject.EntityLayer.Concrete;
 using Microsoft.AspNetCore.Identity;
@@ -9,10 +10,12 @@ namespace EasyCashIdentityProject.PresentationLayer.Controllers
     public class SendMoneyController : Controller
     {
         private readonly UserManager<AppUser> _userManager;
+        private readonly ICustomerAccountProcessService _customerAccountProcessService;
 
-        public SendMoneyController(UserManager<AppUser> userManager)
+        public SendMoneyController(UserManager<AppUser> userManager, ICustomerAccountProcessService customerAccountProcessService)
         {
             _userManager = userManager;
+            _customerAccountProcessService = customerAccountProcessService;
         }
 
         [HttpGet]
