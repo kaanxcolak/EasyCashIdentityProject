@@ -1,12 +1,30 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EasyCashIdentityProject.BusinessLayer.Abstract;
+using EasyCashIdentityProject.DataAccessLayer.Concrete;
+using EasyCashIdentityProject.EntityLayer.Concrete;
+using EasyCashIdentityProject.PresentationLayer.ViewComponents.Customer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace EasyCashIdentityProject.PresentationLayer.Controllers
 {
     public class MyLastProcessController : Controller
     {
-        public IActionResult Index()
+        private readonly UserManager<AppUser> _userMangere;
+        private readonly ICustomerAccountProcessService _customerAccountProcessService;
+
+        public MyLastProcessController(UserManager<AppUser> userMangere, ICustomerAccountProcessService customerAccountProcessService)
         {
-            return View();
+            _userMangere = userMangere;
+            _customerAccountProcessService = customerAccountProcessService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var user = await _userMangere.FindByNameAsync(User.Identity.Name);
+            var context = new Context();
+            int id = context.CustomerAccounts.Where(x=>x.AppUserID == user.Id && x.CustomerAccountCurrency=="Türk Lirası").Select(y=>y.CustomerAccountID).FirstOrDefault();
+            var values = _customerAccountProcessService.TMyLastProcess(id);
+            return View(values);
         }
     }
 }
