@@ -10,10 +10,7 @@
             <div class="title_left">
                 <h3>Son İşlemlerim</h3>
             </div>
-
-            </div>
-
-
+        </div>
 
         <div class="clearFix"> </div>
         <div class="">
@@ -43,7 +40,7 @@
                                         </div>
                                         <div class="block_content">
                                             <h2 class="title">
-                                                <a>Gönderen: @item.SenderCustomer --- Alıcı: @item.ReceiverID</a>
+                                                <a>Gönderen: @item.SenderCustomer.AppUser.Name @item.SenderCustomer.AppUser.Surname --- Alıcı: @item.ReceiverCustomer.AppUser.Name @item.ReceiverCustomer.AppUser.Surname</a>
                                             </h2>
                                             <div class="byline">
                                                 <span>@item.ProcessDate</span>
