@@ -19,6 +19,7 @@ namespace EasyCashIdentityProject.DataAccessLayer.Concrete
 
         public DbSet<CustomerAccount> CustomerAccounts { get; set; }  //C# tarafındaki Sınıf ismi --- sql serverdaki tablo ismi
         public DbSet<CustomerAccountProcess> CustomerAccountProcesses { get; set; }
+        public DbSet<ElectricBill> ElectricBills { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.Entity<CustomerAccountProcess>()
